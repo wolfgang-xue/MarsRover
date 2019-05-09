@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MarsRover.Services
 {
-    interface IRoverService
+    public interface IRoverService
     {
         RoverPosition Navigate(RoverPosition start, string command);
     }

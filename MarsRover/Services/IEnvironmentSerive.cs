@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MarsRover.Services
 {
-    interface IEnvironmentSerive
+    public interface IEnvironmentSerive
     {
         int MaxX { get; set; }
         int MaxY { get; set; }
