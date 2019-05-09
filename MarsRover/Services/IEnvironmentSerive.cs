@@ -1,8 +1,4 @@
 ﻿using MarsRover.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MarsRover.Services
 {
@@ -12,5 +8,6 @@ namespace MarsRover.Services
         int MaxY { get; set; }
 
         bool ValidateMove(RoverPosition position);
+        bool IsInitialized();
     }
 }

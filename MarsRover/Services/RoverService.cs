@@ -1,18 +1,19 @@
 ﻿using MarsRover.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MarsRover.Services
 {
     public class RoverService : IRoverService
     {
+        #region Fields
+        private IEnvironmentSerive _environmentSerive;
+        #endregion
 
-        public RoverService()
+        #region ctor
+        public RoverService(IEnvironmentSerive environmentSerive)
         {
-
+            _environmentSerive = environmentSerive;
         }
+        #endregion
 
         public RoverPosition Navigate(RoverPosition start, string command)
         {
@@ -43,6 +44,7 @@ namespace MarsRover.Services
 
         private RoverPosition Move(RoverPosition start)
         {
+            var backup = new RoverPosition() {Name = start.Name, Direction = start.Direction, X = start.X, Y = start.Y };
             switch (start.Direction)
             {
                 case 'E':
@@ -60,7 +62,9 @@ namespace MarsRover.Services
                 default:
                     break;
             }
-            return start;
+
+            // Validate the movement
+            return _environmentSerive.ValidateMove(start)?start : backup;
         }
 
         private RoverPosition TurnLeft(RoverPosition start)

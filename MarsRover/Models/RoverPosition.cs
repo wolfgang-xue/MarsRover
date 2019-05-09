@@ -12,4 +12,10 @@ namespace MarsRover.Models
         public int Y { get; set; }
         public char Direction { get; set; }
     }
+
+    public class RoverPositionVm  
+    {
+        public RoverPosition Position { get; set; }
+        public string Command { get; set; }
+    }
 }

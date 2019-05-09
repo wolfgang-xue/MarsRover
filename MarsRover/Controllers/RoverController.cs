@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using MarsRover.Models;
 using MarsRover.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MarsRover.Controllers
@@ -27,47 +23,45 @@ namespace MarsRover.Controllers
         #endregion
 
         #region API Methods
-        // GET: api/Rover
+        // Quick Test
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<RoverPosition> Get()
         {
             var start = new RoverPosition() { Name = "Rover1", Direction = 'N', X = 1, Y = 2 };
             string command = "LMLMLMLMM";
             // 1 3 N
-            var end =_roverService.Navigate(start, command);
+            var end1 =_roverService.Navigate(start, command);
 
             start = new RoverPosition() { Name = "Rover2", Direction = 'E', X = 3, Y = 3 };
             command = "MMRMMRMRRM";
             // 5 1 E
-            end = _roverService.Navigate(start, command);
+            var end2 = _roverService.Navigate(start, command);
 
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET: api/Rover/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
-        {
-            return "value";
+            return new RoverPosition[] { end1, end2 };
         }
         
-        // POST: api/Rover
+        // Enquiry the end position
         [HttpPost]
-        public void Post([FromBody]string value)
+        public RoverPosition Post([FromBody]RoverPositionVm start)
         {
+            RoverPosition end = null;
+
+            if (_environmentService.IsInitialized())
+            {
+                end = _roverService.Navigate(start.Position, start.Command);
+            }
+
+            return end;
         }
         
-        // PUT: api/Rover/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        // Set the max boundary
+        [HttpPut]
+        public void Put([FromBody]RoverPosition max)
         {
+            _environmentService.MaxX = max.X;
+            _environmentService.MaxY = max.Y;
         }
-        
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+
         #endregion
     }
 }
