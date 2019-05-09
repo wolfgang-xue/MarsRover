@@ -27,11 +27,16 @@ namespace MarsRover.Controllers
         [HttpGet]
         public IEnumerable<RoverPosition> Get()
         {
+            // Initialize the environment
+            _environmentService.MaxX = 5;
+            _environmentService.MaxY = 5;
+
+            // Test1
             var start = new RoverPosition() { Name = "Rover1", Direction = 'N', X = 1, Y = 2 };
             string command = "LMLMLMLMM";
             // 1 3 N
             var end1 =_roverService.Navigate(start, command);
-
+            // Test2
             start = new RoverPosition() { Name = "Rover2", Direction = 'E', X = 3, Y = 3 };
             command = "MMRMMRMRRM";
             // 5 1 E
