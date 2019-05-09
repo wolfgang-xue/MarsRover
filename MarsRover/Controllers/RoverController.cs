@@ -31,18 +31,25 @@ namespace MarsRover.Controllers
             _environmentService.MaxX = 5;
             _environmentService.MaxY = 5;
 
-            // Test1
-            var start = new RoverPosition() { Name = "Rover1", Direction = 'N', X = 1, Y = 2 };
-            string command = "LMLMLMLMM";
-            // 1 3 N
-            var end1 =_roverService.Navigate(start, command);
-            // Test2
-            start = new RoverPosition() { Name = "Rover2", Direction = 'E', X = 3, Y = 3 };
-            command = "MMRMMRMRRM";
-            // 5 1 E
-            var end2 = _roverService.Navigate(start, command);
+            try
+            {
+                // Test1
+                var start = new RoverPosition() { Name = "Rover1", Direction = 'N', X = 1, Y = 2 };
+                string command = "LMLMLMLMM";
+                // 1 3 N
+                var end1 = _roverService.Navigate(start, command);
+                // Test2
+                start = new RoverPosition() { Name = "Rover2", Direction = 'E', X = 3, Y = 3 };
+                command = "MMRMMRMRRM";
+                // 5 1 E
+                var end2 = _roverService.Navigate(start, command);
 
-            return new RoverPosition[] { end1, end2 };
+                return new RoverPosition[] { end1, end2 };
+            }
+            catch
+            { }
+
+            return null;
         }
         
         // Enquiry the end position
@@ -50,11 +57,15 @@ namespace MarsRover.Controllers
         public RoverPosition Post([FromBody]RoverPositionVm start)
         {
             RoverPosition end = null;
-
-            if (_environmentService.IsInitialized())
+            try
             {
-                end = _roverService.Navigate(start.Position, start.Command);
+                if (_environmentService.IsInitialized())
+                {
+                    end = _roverService.Navigate(start.Position, start.Command);
+                }
             }
+            catch
+            { }
 
             return end;
         }
@@ -63,8 +74,13 @@ namespace MarsRover.Controllers
         [HttpPut]
         public void Put([FromBody]RoverPosition max)
         {
-            _environmentService.MaxX = max.X;
-            _environmentService.MaxY = max.Y;
+            try
+            {
+                _environmentService.MaxX = max.X;
+                _environmentService.MaxY = max.Y;
+            }
+            catch
+            { }
         }
 
         #endregion
